@@ -1,7 +1,7 @@
 package id.bukusaku.bukusaku.data.map
 
-import id.bukusaku.bukusaku.data.local.ArticlesEntity
-import id.bukusaku.bukusaku.data.local.NewArticleEntity
+import id.bukusaku.bukusaku.data.local.entity.ArticlesEntity
+import id.bukusaku.bukusaku.data.local.entity.NewArticleEntity
 import id.bukusaku.bukusaku.data.remote.ArticleDetail
 import id.bukusaku.bukusaku.data.remote.ArticlesModel
 import id.bukusaku.bukusaku.data.remote.CategoriesModel

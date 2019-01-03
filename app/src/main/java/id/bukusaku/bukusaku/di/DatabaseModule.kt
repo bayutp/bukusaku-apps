@@ -1,7 +1,7 @@
 package id.bukusaku.bukusaku.di
 
 import android.arch.persistence.room.Room
-import id.bukusaku.bukusaku.data.local.AppDatabase
+import id.bukusaku.bukusaku.data.local.database.AppDatabase
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module.module
 
@@ -12,4 +12,5 @@ val dbModule = module {
     single { get<AppDatabase>().categoriesDao() }
     single { get<AppDatabase>().newArticlesDao() }
     single { get<AppDatabase>().articlesDao() }
+    single { get<AppDatabase>().productsDao() }
 }

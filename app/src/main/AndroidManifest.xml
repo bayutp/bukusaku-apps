@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="id.bukusaku.bukusaku">
+
     <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
-            android:name=".App"
-            android:allowBackup="true"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/AppTheme">
-        <activity android:name=".ui.MainActivity"
-                  android:theme="@style/ThemeHome"
-                  android:configChanges="orientation|screenSize|keyboardHidden">
+        android:name=".App"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ui.MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/ThemeHome">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.detail.article.DetailArticleActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/MyTheme.Detail">
+        </activity>
+        <activity
+            android:name=".ui.detail.category.ProductsActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/ThemeHome">
+        </activity>
+        <activity
+            android:name=".ui.detail.product.ProductDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:theme="@style/ThemeHome">
         </activity>
     </application>
 

@@ -14,9 +14,15 @@ import com.google.gson.Gson
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.data.map.Categories
 import id.bukusaku.bukusaku.data.map.NewArticles
+import id.bukusaku.bukusaku.ui.detail.article.DetailArticleActivity
+import id.bukusaku.bukusaku.ui.detail.category.ProductsActivity
+import id.bukusaku.bukusaku.utils.ARTICLE_ID
+import id.bukusaku.bukusaku.utils.PRODUCT_NAME
 import id.bukusaku.bukusaku.utils.visible
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 import timber.log.Timber
@@ -62,10 +68,10 @@ class HomeFragment : Fragment(), MainContract.View {
 
     private fun initView() {
         adapter = MainAdapter(categories) { categories ->
-            toast(categories.name.toString()).show()
+            startActivity<ProductsActivity>(PRODUCT_NAME to categories.name)
         }
         adapterArticle = ArticleNewAdapter(articles) { article ->
-            toast(article.title.toString()).show()
+            startActivity<DetailArticleActivity>(ARTICLE_ID to article.id)
         }
 
         rvCategories.layoutManager = GridLayoutManager(activity, 3)
@@ -108,6 +114,7 @@ class HomeFragment : Fragment(), MainContract.View {
     override fun onError(error: Throwable) {
         Timber.e(error.localizedMessage)
         rvCategories.snackbar(error.localizedMessage)
+        swipe_refresh.isRefreshing = false
     }
 
     override fun onAttachView() {

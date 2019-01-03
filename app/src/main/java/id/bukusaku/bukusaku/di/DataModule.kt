@@ -8,5 +8,5 @@ import org.koin.dsl.module.module
 val dataModule = module {
     single { AppRepo(get(), get()) }
     single { RemoteDataSource(get()) }
-    single { LocalDataSource(get(), get(), get()) }
+    single { LocalDataSource(get(), get(), get(), get()) }
 }

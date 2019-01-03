@@ -1,11 +1,11 @@
-package id.bukusaku.bukusaku.data.local
+package id.bukusaku.bukusaku.data.local.entity
 
 import android.arch.persistence.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import id.bukusaku.bukusaku.data.remote.CategoriesModel
 
-class Converters {
+open class Converters {
     @TypeConverter
     fun fromCategory(category: CategoriesModel): String {
         val json = Gson().toJson(category)

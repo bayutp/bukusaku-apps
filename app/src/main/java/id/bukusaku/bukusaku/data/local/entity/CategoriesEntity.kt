@@ -1,4 +1,4 @@
-package id.bukusaku.bukusaku.data.local
+package id.bukusaku.bukusaku.data.local.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
