@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <ImageView
+        android:id="@+id/img_cover_new"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/tv_category_new"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="12dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
+        android:paddingStart="12dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:background="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_title_new"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/white"
+        android:background="@color/backgroundTransparent"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:padding="8dp"
+        android:maxLines="2"
+        app:layout_constraintBottom_toBottomOf="@id/img_cover_new"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
