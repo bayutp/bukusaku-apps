@@ -1,6 +1,6 @@
 package id.bukusaku.bukusaku.data.map
 
-import id.bukusaku.bukusaku.data.local.CategoriesEntity
+import id.bukusaku.bukusaku.data.local.entity.CategoriesEntity
 import id.bukusaku.bukusaku.data.remote.CategoriesModel
 
 data class Categories(

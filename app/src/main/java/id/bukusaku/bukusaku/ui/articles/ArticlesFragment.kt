@@ -11,7 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.data.map.Articles
+import id.bukusaku.bukusaku.ui.detail.article.DetailArticleActivity
+import id.bukusaku.bukusaku.utils.ARTICLE_ID
 import org.jetbrains.anko.find
+import org.jetbrains.anko.support.v4.startActivity
 import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
 
@@ -48,7 +51,7 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
 
     private fun initView() {
         adapter = ArticlesAdapter(dataArticles, { data ->
-            toast(data.title.toString()).show()
+            startActivity<DetailArticleActivity>(ARTICLE_ID to data.id)
         }) { dataBookmark ->
             toast(dataBookmark.imageUrl.toString()).show()
         }
@@ -72,6 +75,7 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
 
     override fun onError(error: Throwable) {
         toast(error.localizedMessage).show()
+        swipeRefresh.isRefreshing = false
     }
 
     override fun onAttachView() {

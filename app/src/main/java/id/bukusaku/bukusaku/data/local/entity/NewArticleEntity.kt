@@ -1,7 +1,6 @@
-package id.bukusaku.bukusaku.data.local
+package id.bukusaku.bukusaku.data.local.entity
 
 import android.arch.persistence.room.*
-import id.bukusaku.bukusaku.data.map.Categories
 import id.bukusaku.bukusaku.data.remote.ArticleDetail
 import id.bukusaku.bukusaku.data.remote.ArticlesModel
 import id.bukusaku.bukusaku.data.remote.CategoriesModel

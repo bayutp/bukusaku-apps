@@ -1,11 +1,15 @@
 package id.bukusaku.bukusaku.data.repository
 
-import id.bukusaku.bukusaku.data.local.ArticlesEntity
-import id.bukusaku.bukusaku.data.map.Categories
-import id.bukusaku.bukusaku.data.local.CategoriesEntity
-import id.bukusaku.bukusaku.data.local.NewArticleEntity
+import id.bukusaku.bukusaku.data.local.entity.ArticlesEntity
+import id.bukusaku.bukusaku.data.local.entity.CategoriesEntity
+import id.bukusaku.bukusaku.data.local.entity.NewArticleEntity
+import id.bukusaku.bukusaku.data.local.entity.ProductEntity
 import id.bukusaku.bukusaku.data.map.Articles
+import id.bukusaku.bukusaku.data.map.Categories
 import id.bukusaku.bukusaku.data.map.NewArticles
+import id.bukusaku.bukusaku.data.map.ProductsMap
+import id.bukusaku.bukusaku.data.response.ArticleDetailResponseById
+import id.bukusaku.bukusaku.data.response.ProductDetailResponse
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
@@ -73,6 +77,14 @@ class AppRepo(
             }
     }
 
+    override fun getArticleById(id: Int): Single<ArticleDetailResponseById> {
+        return remoteDataSource.getArticleById(id)
+    }
+
+    override fun getProductById(id: Int): Single<ProductDetailResponse> {
+        return remoteDataSource.getProductById(id)
+    }
+
     private fun getCategoriesFromRemote(): Single<List<Categories>> {
         return remoteDataSource.getCategories()
             .doOnSuccess {
@@ -111,6 +123,45 @@ class AppRepo(
             .map { response ->
                 response.data.map { Articles.from(it) }
             }
+    }
+
+    override fun getProducts(categoryName: String): Single<List<ProductsMap>> {
+        return localDataSource.getLocalProducts(categoryName)
+            .map { productsLocal ->
+                productsLocal.map {
+                    ProductsMap.from(it)
+                }
+            }
+            .flatMap { listProducts ->
+                if (listProducts.isEmpty()) getProductsFromRemote(categoryName)
+                else Single.just(listProducts)
+            }
+            .doAfterSuccess {
+                getProductsFromRemote(categoryName)
+                    .subscribeOn(Schedulers.io())
+                    .subscribe({
+                        Timber.d("update products")
+                    }, { error ->
+                        Timber.e(error.localizedMessage)
+                    })
+            }
+    }
+
+    private fun getProductsFromRemote(namaCategory: String): Single<List<ProductsMap>> {
+        return remoteDataSource.getProducts(namaCategory)
+            .doOnSuccess {
+                localDataSource.saveProducts(
+                    it.data.map { products ->
+                        ProductEntity.from(products)
+                    }
+                )
+            }
+            .map { productResponse ->
+                productResponse.data.map {
+                    ProductsMap.from(it)
+                }
+            }
+
     }
 
 }

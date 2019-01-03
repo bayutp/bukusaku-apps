@@ -17,3 +17,10 @@ data class ArticleDetailResponse(
     @SerializedName("data")
     val data : List<ArticleDetail>
 )
+
+data class ArticleDetailResponseById(
+    @SerializedName("status")
+    val status:String,
+    @SerializedName("data")
+    val data : ArticleDetail
+)

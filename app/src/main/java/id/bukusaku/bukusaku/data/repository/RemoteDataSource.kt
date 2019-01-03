@@ -1,8 +1,6 @@
 package id.bukusaku.bukusaku.data.repository
 
-import id.bukusaku.bukusaku.data.response.ArticleDetailResponse
-import id.bukusaku.bukusaku.data.response.ArticlesResponse
-import id.bukusaku.bukusaku.data.response.CategoriesResponse
+import id.bukusaku.bukusaku.data.response.*
 import id.bukusaku.bukusaku.network.ApiService
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,6 +17,18 @@ class RemoteDataSource(val apiService: ApiService) {
 
     fun getCategories(): Single<CategoriesResponse> {
         return apiService.getCategories()
+    }
+
+    fun getArticleById(id:Int):Single<ArticleDetailResponseById>{
+        return apiService.getArticleById(id)
+    }
+
+    fun getProducts(categoryName:String):Single<ProductsResponse>{
+        return apiService.getProducts(categoryName)
+    }
+
+    fun getProductById(id:Int):Single<ProductDetailResponse>{
+        return apiService.getProductById(id)
     }
 
 }

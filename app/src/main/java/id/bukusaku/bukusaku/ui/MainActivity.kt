@@ -18,19 +18,23 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar_main)
         supportActionBar?.title = resources.getString(R.string.app_name)
+        bottomNavigationState()
+    }
+
+    private fun bottomNavigationState() {
         navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 menu_home -> {
                     supportActionBar?.title = resources.getString(R.string.app_name)
-                    loadFragment(savedInstanceState,HomeFragment(),HomeFragment::class.java.simpleName)
+                    loadFragment(HomeFragment(), HomeFragment::class.java.simpleName)
                 }
                 menu_article -> {
-                    supportActionBar?.title = resources.getString(R.string.articles)
-                    loadFragment(savedInstanceState,ArticlesFragment(),ArticlesFragment::class.java.simpleName)
+                    supportActionBar?.title = resources.getString(R.string.app_name)
+                    loadFragment(ArticlesFragment(), ArticlesFragment::class.java.simpleName)
                 }
                 menu_bookmark -> {
-                    supportActionBar?.title = resources.getString(R.string.bookmark)
-                    loadFragment(savedInstanceState, FavoritesFragment(), FavoritesFragment::class.java.simpleName)
+                    supportActionBar?.title = resources.getString(R.string.app_name)
+                    loadFragment(FavoritesFragment(), FavoritesFragment::class.java.simpleName)
                 }
             }
             true
@@ -38,19 +42,16 @@ class MainActivity : AppCompatActivity() {
         navigation.selectedItemId = menu_home
     }
 
-    private fun loadFragment(savedInstanceState: Bundle?, fragment: Fragment, fragmentClass:String){
-        if (savedInstanceState == null){
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.frame_container, fragment, fragmentClass)
-                .addToBackStack(null)
-                .commit()
-        }
+    private fun loadFragment(fragment: Fragment, fragmentClass: String) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.frame_container, fragment, fragmentClass)
+            .commit()
     }
 
-    override fun onBackPressed() {
-        finish()
-        super.onBackPressed()
+    override fun onResume() {
+        super.onResume()
+        bottomNavigationState()
     }
 
 }
