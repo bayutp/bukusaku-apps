@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 
 data class Products(
     @SerializedName("id")
-    val id:Int,
+    val id: Int,
     @SerializedName("product_name")
-    val name:String?,
+    val name: String?,
     @SerializedName("company")
-    val company:String?,
+    val company: String?,
     @SerializedName("logo_img")
-    val imgUrl:String?,
+    val imgUrl: String?,
     @SerializedName("category_name")
-    val category:String?
+    val category: String?
 )

@@ -7,13 +7,14 @@
 
     <application
         android:name=".App"
+        android:fullBackupContent="@xml/my_backup_rule"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+        tools:ignore="GoogleAppIndexingWarning" tools:replace="android:icon">
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -36,8 +37,14 @@
         </activity>
         <activity
             android:name=".ui.detail.product.ProductDetailActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/ThemeHome">
+        </activity>
+        <activity
+            android:theme="@style/MyTheme.Enquiry"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:name=".ui.enquiry.EnquiryActivity">
         </activity>
     </application>
 

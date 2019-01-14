@@ -5,7 +5,7 @@ import id.bukusaku.bukusaku.data.remote.CategoriesModel
 
 data class CategoriesResponse(
     @SerializedName("status")
-    val status:String,
+    val status: String,
     @SerializedName("data")
-    val data:List<CategoriesModel>
+    val data: List<CategoriesModel>
 )

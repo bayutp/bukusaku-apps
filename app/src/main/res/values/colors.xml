@@ -2,10 +2,17 @@
 <resources>
     <color name="colorPrimary">#ff9131</color>
     <color name="colorPrimaryDark">#ff5500</color>
-    <color name="colorAccent">#fcf5f7</color>
+    <color name="colorAccent">#ff9131</color>
+
     <color name="backgroundTransparent">#80000000</color>
-    <color name="titleTransparant">#59000000</color>
+    <color name="titleTransparent">#59000000</color>
+
     <color name="colorItemNav">#ff5500</color>
     <color name="colorUncheck">#616161</color>
+
     <color name="colorNav">#EEEEEE</color>
+
+    <color name="editTextNormal">#ccc4c4</color>
+    <color name="editTextActive">#ff9131</color>
+
 </resources>

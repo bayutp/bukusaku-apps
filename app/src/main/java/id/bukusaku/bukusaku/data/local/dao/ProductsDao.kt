@@ -10,8 +10,11 @@ import io.reactivex.Single
 @Dao
 interface ProductsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertProducts(data:List<ProductEntity>)
+    fun insertProducts(data: List<ProductEntity>)
 
     @Query("SELECT * FROM products WHERE category LIKE :categoryName")
-    fun getLocalProducts(categoryName:String):Single<List<ProductEntity>>
+    fun getLocalProducts(categoryName: String): Single<List<ProductEntity>>
+
+    @Query("SELECT * FROM products WHERE name LIkE :productName AND category LIKE :category")
+    fun getSearchResult(productName: String?, category: String?): List<ProductEntity>
 }

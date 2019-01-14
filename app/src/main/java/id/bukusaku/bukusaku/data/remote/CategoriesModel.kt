@@ -1,6 +1,5 @@
 package id.bukusaku.bukusaku.data.remote
 
-import android.arch.persistence.room.Entity
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
@@ -8,11 +7,11 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class CategoriesModel(
     @SerializedName("id")
-    val id:Int,
+    val id: Int,
     @SerializedName("category_name")
-    val name:String?,
+    val name: String?,
     @SerializedName("hex_color")
-    val color:String?,
+    val color: String?,
     @SerializedName("icon")
-    val icon:String?
-):Parcelable
+    val icon: String?
+) : Parcelable
