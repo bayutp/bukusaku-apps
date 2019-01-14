@@ -9,19 +9,23 @@ import id.bukusaku.bukusaku.data.local.entity.NewArticleEntity
 import io.reactivex.Single
 
 @Dao
-interface NewArticlesDao{
+interface NewArticlesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNewArticles(data:List<NewArticleEntity>)
+    fun insertNewArticles(data: List<NewArticleEntity>)
 
     @Query("SELECT * FROM new_articles")
-    fun getLocalNewArticles():Single<List<NewArticleEntity>>
+    fun getLocalNewArticles(): Single<List<NewArticleEntity>>
 }
 
 @Dao
-interface ArticlesDao{
+interface ArticlesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertArticles(data:List<ArticlesEntity>)
+    fun insertArticles(data: List<ArticlesEntity>)
 
-    @Query("SELECT * FROM articles")
-    fun getLocalArticles():Single<List<ArticlesEntity>>
+    @Query("SELECT * FROM articles ORDER BY id DESC")
+    fun getLocalArticles(): Single<List<ArticlesEntity>>
+
+    @Query("SELECT * FROM articles WHERE title LIKE :query")
+    fun getSearchResult(query: String?): List<ArticlesEntity>
+
 }

@@ -1,9 +1,80 @@
 <resources>
     <string name="app_name">Bukusaku</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
     <string name="articles">Articles</string>
     <string name="bookmark">Bookmark</string>
+    <string name="name">Nama</string>
+    <string name="phone_number">Nomor Telepon</string>
+    <string name="email">Email</string>
+    <string name="jobs">Pekerjaan / Usaha</string>
+    <string name="enquiry_title">Judul Kerjasama</string>
+    <string name="enquiry_content">Isi Kerjasama</string>
+    <string name="send">Send</string>
+    <string name="title_info_enquiry">Berikut merupakan data lengkap anda yang telah kami terima : </string>
+    <string name="source">Source</string>
+    <string name="enquiry">Ajukan Kerjasama</string>
+    <string name="enquiry_title_bar">Kerjasama</string>
+    <string name="visit_website">Kunjungi Website</string>
+    <string name="latest">Latest</string>
+    <string name="empty_message">Kamu tidak memiliki item yang di bookmark</string>
+    <string name="search">search</string>
+
+    <string name="products_bookmark_empty_message">Products %1$s tidak ada pada Bookmark Anda :(</string>
+    <string name="articles_bookmark_empty_message">Articles tentang %1$s tidak ada pada Bookmark Anda :(</string>
+    <string name="products_empty_message">Products %1$s tidak ada pada Bukusaku :(</string>
+    <string name="articles_empty_message">Articles tentang %1$s tidak ada pada Bukusaku :(</string>
+    <string name="product_empty_message">Products tentang %1$s tidak ada pada Kategori ini :(</string>
+    <string name="products">products</string>
+
+    <string name="home_search_hint">Search products here ex:Binar Academy</string>
+    <string name="articles_search_hint">Search articles here</string>
+    <string name="articles_search_failed">Can\'t search item. Error %1$s</string>
+
+    <string name="bookmark_articles_search_hint">Search articles on your bookmark</string>
+    <string name="bookmark_products_search_hint">Search products on your bookmark</string>
+    <string name="category_search_hint">Search %1$s products here</string>
+
+    <string name="articles_error_alert_title">Oops</string>
+    <string name="articles_error_alert_confirm">Refresh</string>
+    <string name="articles_error_alert_close">Close</string>
+
+    <string name="articles_alert_loading_title">Loading</string>
+    <string name="articles_success_alert_confirm">OK</string>
+
+    <string name="bookmark_articles_success_message">Artikel ini telah di bookmark</string>
+    <string name="bookmark_articles_success_title">Bookmarked</string>
+    <string name="bookmark_articles_error">Artikel ini gagal di bookmark, Error : %1$s</string>
+
+    <string name="delete_bookmark_articles_message">Artikel ini telah di delete</string>
+    <string name="delete_bookmark_articles_title">Deleted</string>
+    <string name="delete_bookmark_articles_error">Artikel ini gagal di delete, Error : %1$s</string>
+
+    <string name="bookmark_products_success_message">Product ini telah di bookmark</string>
+    <string name="bookmark_products_error">Product ini gagal di bookmark, Error : %1$s</string>
+
+    <string name="delete_bookmark_products_message">Product ini telah di delete</string>
+    <string name="delete_bookmark_products_error">Product ini gagal di delete, Error : %1$s</string>
+
+    <string name="form_validation_empty_name">Silahkan masukkan nama lengkap anda</string>
+    <string name="form_validation_empty_telp">Silahkan masukkan nomor telepon anda</string>
+    <string name="form_validation_nonvalid_telp">Nomor telepon yang anda masukkan tidak valid</string>
+    <string name="form_validation_nonvalid_email">Email yang anda masukkan tidak valid</string>
+    <string name="form_validation_empty_email">Silahkan masukkan email anda</string>
+    <string name="form_validation_empty_jobs">Silahkan masukkan pekerjaan anda saat ini</string>
+    <string name="form_validation_empty_title">Silahkan masukkan judul kerjasama</string>
+    <string name="form_validation_empty_content">Silahkan masukkan isi kerjasama</string>
+    <string name="form_validation_sort_content">Kerjasama anda kurang detail, silahkan jelaskan dengan detail</string>
+
+    <string name="info_enquiry_title">Data Anda sudah berhasil di kirim</string>
+    <string name="info_enquiry_confirm">Detail</string>
+    <string name="info_detail_enquiry_title">Informasi Detail Kerjasama</string>
+
+    <string name="confirm_enquiry_title">Konfirmasi Kerjasama</string>
+    <string name="confirm_enquiry_content">
+        Apakah anda sudah yakin data anda sudah benar dan ingin mengirim kerjasama sekarang?
+    </string>
+    <string name="confirm_enquiry_yes">Yes</string>
+    <string name="confirm_enquiry_cancel">Cancel</string>
+
 </resources>

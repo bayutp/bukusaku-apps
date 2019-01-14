@@ -5,7 +5,7 @@ import id.bukusaku.bukusaku.data.remote.ProductDetail
 
 data class ProductDetailResponse(
     @SerializedName("status")
-    val status:String?,
+    val status: String?,
     @SerializedName("data")
     val data: ProductDetail
 )

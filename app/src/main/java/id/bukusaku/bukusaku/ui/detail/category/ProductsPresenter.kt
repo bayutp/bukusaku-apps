@@ -6,13 +6,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-class ProductsPresenter(
-    private val compositeDisposable: CompositeDisposable,
-    private val appRepo: AppRepo
-) : ProductsContract.Presenter {
-
+class ProductsPresenter(private val compositeDisposable: CompositeDisposable, private val appRepo: AppRepo)
+    : ProductsContract.Presenter {
     private var mView: ProductsContract.View? = null
 
     override fun getProducts(categoryName: String) {
@@ -23,18 +22,19 @@ class ProductsPresenter(
                 onSuccess = {
                     mView?.showProducts(it)
                     mView?.showView()
-                    Timber.d("data products: ${it}")
                 },
-                onError = {
-                    mView?.onError(it)
-                    Timber.e("error product : ${it.localizedMessage}")
-                }
+                onError = { mView?.onError(it) }
             ).addTo(compositeDisposable)
     }
 
-    override fun onAttach(view: ProductsContract.View) {
-        mView = view
+    override fun getProductsSearchResult(query: String?, categoryName: String?) {
+        GlobalScope.launch(Dispatchers.Main) {
+            val data = appRepo.getProductsSearchResult("%$query%", categoryName)
+            if (data.isEmpty()) mView?.showEmpty() else mView?.showSearchResult(data)
+        }
     }
+
+    override fun onAttach(view: ProductsContract.View) { mView = view }
 
     override fun onDetach() {
         mView = null

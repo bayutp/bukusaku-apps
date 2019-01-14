@@ -8,7 +8,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class ApiClient {
-    fun create():ApiService{
+    fun create(): ApiService {
         val retrofit = Retrofit.Builder()
             .client(provideOkhttpClient())
             .baseUrl(BuildConfig.BASE_URL)
@@ -18,7 +18,7 @@ class ApiClient {
         return retrofit.create(ApiService::class.java)
     }
 
-    fun provideOkhttpClient(): OkHttpClient{
+    private fun provideOkhttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()

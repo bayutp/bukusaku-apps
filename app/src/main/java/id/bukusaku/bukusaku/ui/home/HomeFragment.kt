@@ -1,58 +1,65 @@
 package id.bukusaku.bukusaku.ui.home
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.view.*
 import android.widget.TextView
-import com.google.gson.Gson
 import id.bukusaku.bukusaku.R
+import id.bukusaku.bukusaku.R.id.action_search
 import id.bukusaku.bukusaku.data.map.Categories
 import id.bukusaku.bukusaku.data.map.NewArticles
+import id.bukusaku.bukusaku.data.remote.ProductDetail
 import id.bukusaku.bukusaku.ui.detail.article.DetailArticleActivity
 import id.bukusaku.bukusaku.ui.detail.category.ProductsActivity
-import id.bukusaku.bukusaku.utils.ARTICLE_ID
-import id.bukusaku.bukusaku.utils.PRODUCT_NAME
-import id.bukusaku.bukusaku.utils.visible
+import id.bukusaku.bukusaku.ui.detail.product.ProductDetailActivity
+import id.bukusaku.bukusaku.ui.home.adapter.CategoriesAdapter
+import id.bukusaku.bukusaku.ui.home.adapter.LatestArticlesAdapter
+import id.bukusaku.bukusaku.ui.home.adapter.SearchAdapter
+import id.bukusaku.bukusaku.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
-import org.jetbrains.anko.support.v4.toast
 import org.koin.android.ext.android.inject
-import timber.log.Timber
 
 
-class HomeFragment : Fragment(), MainContract.View {
-    private lateinit var adapter: MainAdapter
-    private lateinit var adapterArticle: ArticleNewAdapter
-
+class HomeFragment : Fragment(), HomeContract.View {
+    private lateinit var adapter: CategoriesAdapter
+    private lateinit var adapterArticle: LatestArticlesAdapter
+    private lateinit var searchAdapter: SearchAdapter
     private lateinit var rvCategories: RecyclerView
     private lateinit var rvNews: RecyclerView
+    private lateinit var rvSearch: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var latest: TextView
-
+    private var searchQuery: String? = null
+    private var searchView: SearchView? = null
+    private var queryTextListener: SearchView.OnQueryTextListener? = null
+    private var searchHome: MutableList<ProductDetail> = mutableListOf()
     private val categories: MutableList<Categories> = mutableListOf()
     private val articles: MutableList<NewArticles> = mutableListOf()
+    private val presenter: HomePresenter by inject()
 
-    private val presenter: MainPresenter by inject()
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+        inflater.inflate(R.layout.fragment_home, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         rvCategories = view.find(R.id.rv_categories)
         rvNews = view.find(R.id.rv_update_news)
+        rvSearch = view.find(R.id.rv_search)
         swipeRefresh = view.find(R.id.swipe_refresh)
         latest = view.find(R.id.tv_new_article)
 
@@ -60,19 +67,10 @@ class HomeFragment : Fragment(), MainContract.View {
         getData()
     }
 
-    private fun showView() {
-        rvCategories.visible()
-        rvNews.visible()
-        latest.visible()
-    }
-
     private fun initView() {
-        adapter = MainAdapter(categories) { categories ->
-            startActivity<ProductsActivity>(PRODUCT_NAME to categories.name)
-        }
-        adapterArticle = ArticleNewAdapter(articles) { article ->
-            startActivity<DetailArticleActivity>(ARTICLE_ID to article.id)
-        }
+        adapter = CategoriesAdapter(categories) { startActivity<ProductsActivity>(PRODUCT_NAME to it.name) }
+        adapterArticle = LatestArticlesAdapter(articles) { startActivity<DetailArticleActivity>(ARTICLE_ID to it.id) }
+        searchAdapter = SearchAdapter(searchHome) { startActivity<ProductDetailActivity>(PRODUCT_ID to it.id) }
 
         rvCategories.layoutManager = GridLayoutManager(activity, 3)
         rvCategories.adapter = adapter
@@ -81,6 +79,9 @@ class HomeFragment : Fragment(), MainContract.View {
         layoutManager.reverseLayout = true
         rvNews.layoutManager = layoutManager
         rvNews.adapter = adapterArticle
+
+        rvSearch.layoutManager = LinearLayoutManager(activity)
+        rvSearch.adapter = searchAdapter
 
         swipeRefresh.setOnRefreshListener {
             getData()
@@ -94,7 +95,6 @@ class HomeFragment : Fragment(), MainContract.View {
     }
 
     override fun showDataArticles(data: List<NewArticles>) {
-        Timber.d("data articles: ${Gson().toJsonTree(data)}")
         swipeRefresh.isRefreshing = false
         articles.clear()
         articles.addAll(data)
@@ -103,7 +103,6 @@ class HomeFragment : Fragment(), MainContract.View {
     }
 
     override fun showDataCategories(data: List<Categories>) {
-        Timber.d("data categories: ${Gson().toJsonTree(data)}")
         swipeRefresh.isRefreshing = false
         categories.clear()
         categories.addAll(data)
@@ -111,10 +110,98 @@ class HomeFragment : Fragment(), MainContract.View {
         showView()
     }
 
+    private fun showView() {
+        swipeRefresh.isEnabled = true
+        rvNews.visible()
+        rvCategories.visible()
+        latest.visible()
+        rvSearch.gone()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_menu, menu)
+        val searchItem: MenuItem? = menu.findItem(R.id.action_search)
+        val searchManager: SearchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        if (null != searchItem) {
+            searchView = searchItem.actionView as SearchView
+            searchView?.queryHint = getString(R.string.home_search_hint)
+        }
+        if (null != searchView) {
+            searchView?.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+            queryTextListener = object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return when {
+                        query.isNullOrBlank() || query.isNullOrEmpty() -> {
+                            getData()
+                            true
+                        }
+                        else -> {
+                            searchQuery = query
+                            searchQuery?.toLowerCase()
+                            searchQuery = searchQuery?.replace(" ", "_")
+                            presenter.getSearchResult(searchQuery)
+                            true
+                        }
+                    }
+                }
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    return true
+                }
+
+            }
+            searchView?.setOnQueryTextListener(queryTextListener)
+        }
+        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(item: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(item: MenuItem?): Boolean {
+                getData()
+                return true
+            }
+
+        })
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            action_search -> return false
+        }
+        searchView?.setOnQueryTextListener(queryTextListener)
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun showSearchResult(data: List<ProductDetail>) {
+        swipeRefresh.isEnabled = false
+        rvCategories.invisible()
+        rvNews.gone()
+        latest.invisible()
+        rvSearch.visible()
+        img_empty_search.gone()
+        tv_empty_search.gone()
+        searchHome.clear()
+        searchHome.addAll(data)
+        searchAdapter.notifyDataSetChanged()
+
+    }
+
+    override fun showEmpty() {
+        swipeRefresh.isEnabled = false
+        rvCategories.invisible()
+        rvNews.gone()
+        latest.invisible()
+        rvSearch.gone()
+        img_empty_search.visible()
+        tv_empty_search.text = getString(R.string.products_empty_message, toUpperFirstWord(searchQuery))
+        tv_empty_search.visible()
+    }
+
     override fun onError(error: Throwable) {
-        Timber.e(error.localizedMessage)
-        rvCategories.snackbar(error.localizedMessage)
         swipe_refresh.isRefreshing = false
+        rvCategories.snackbar(error.localizedMessage).show()
     }
 
     override fun onAttachView() {
@@ -129,5 +216,4 @@ class HomeFragment : Fragment(), MainContract.View {
         super.onDestroy()
         onDetachView()
     }
-
 }

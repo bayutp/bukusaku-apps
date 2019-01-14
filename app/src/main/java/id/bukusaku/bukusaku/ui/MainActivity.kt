@@ -6,13 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.R.id.*
 import id.bukusaku.bukusaku.ui.articles.ArticlesFragment
-import id.bukusaku.bukusaku.ui.favorites.FavoritesFragment
+import id.bukusaku.bukusaku.ui.bookmark.BookmarkFragment
 import id.bukusaku.bukusaku.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -25,16 +23,13 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 menu_home -> {
-                    supportActionBar?.title = resources.getString(R.string.app_name)
-                    loadFragment(HomeFragment(), HomeFragment::class.java.simpleName)
+                    loadFragment(HomeFragment(), HomeFragment::class.java.simpleName, null)
                 }
                 menu_article -> {
-                    supportActionBar?.title = resources.getString(R.string.app_name)
-                    loadFragment(ArticlesFragment(), ArticlesFragment::class.java.simpleName)
+                    loadFragment(ArticlesFragment(), ArticlesFragment::class.java.simpleName, null)
                 }
                 menu_bookmark -> {
-                    supportActionBar?.title = resources.getString(R.string.app_name)
-                    loadFragment(FavoritesFragment(), FavoritesFragment::class.java.simpleName)
+                    loadFragment(BookmarkFragment(), BookmarkFragment::class.java.simpleName, null)
                 }
             }
             true
@@ -42,16 +37,18 @@ class MainActivity : AppCompatActivity() {
         navigation.selectedItemId = menu_home
     }
 
-    private fun loadFragment(fragment: Fragment, fragmentClass: String) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.frame_container, fragment, fragmentClass)
-            .commit()
+    private fun loadFragment(fragment: Fragment, TAG: String, savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            supportFragmentManager
+                .beginTransaction()
+                .replace(R.id.frame_container, fragment, TAG)
+                .commit()
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        bottomNavigationState()
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+        navigation.selectedItemId = menu_home
+        loadFragment(HomeFragment(), HomeFragment::class.java.simpleName, savedInstanceState)
     }
-
 }

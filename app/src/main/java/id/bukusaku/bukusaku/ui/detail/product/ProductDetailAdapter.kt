@@ -12,21 +12,14 @@ import kotlinx.android.synthetic.main.item_product_image.*
 
 class ProductDetailAdapter(private val imagesList: MutableList<ImageProduct>) :
     RecyclerView.Adapter<ProductDetailAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewGroup: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_product_image, parent, false))
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewGroup: Int) = ViewHolder(LayoutInflater.from(parent.context)
+        .inflate(R.layout.item_product_image, parent, false))
 
-    override fun getItemCount(): Int {
-        return imagesList.size
-    }
+    override fun getItemCount() = imagesList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(imagesList[position])
-    }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) { holder.bind(imagesList[position]) }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(images: ImageProduct) {
-            img_product_list.loadImage(images.imgUrl)
-        }
+        fun bind(images: ImageProduct) { img_product_list.loadImage(images.imgUrl) }
     }
 }

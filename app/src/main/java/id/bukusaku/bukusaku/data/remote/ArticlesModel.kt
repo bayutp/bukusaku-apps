@@ -1,5 +1,7 @@
 package id.bukusaku.bukusaku.data.remote
 
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class ArticlesModel(
@@ -15,8 +17,10 @@ data class ArticlesModel(
     val link: String?
 )
 
+@Entity(tableName = "article_bookmark")
 data class ArticleDetail(
     @SerializedName("id")
+    @PrimaryKey(autoGenerate = false)
     val id: Int,
     @SerializedName("title")
     val title: String?,
@@ -25,7 +29,7 @@ data class ArticleDetail(
     @SerializedName("image")
     val imageUrl: String?,
     @SerializedName("content")
-    val content:String?,
+    val content: String?,
     @SerializedName("reff_link")
     val link: String?
 )

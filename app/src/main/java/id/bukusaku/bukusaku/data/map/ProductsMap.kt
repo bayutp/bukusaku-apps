@@ -11,20 +11,8 @@ data class ProductsMap(
     val category: String?
 ) {
     companion object {
-        fun from(data: ProductEntity) = ProductsMap(
-            data.id,
-            data.name,
-            data.company,
-            data.imgUrl,
-            data.category
-        )
+        fun from(data: ProductEntity) = ProductsMap(data.id, data.name, data.company, data.imgUrl, data.category)
 
-        fun from(data: Products) = ProductsMap(
-            data.id,
-            data.name,
-            data.company,
-            data.imgUrl,
-            data.category
-        )
+        fun from(data: Products) = ProductsMap(data.id, data.name, data.company, data.imgUrl, data.category)
     }
 }

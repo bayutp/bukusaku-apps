@@ -6,21 +6,21 @@ import id.bukusaku.bukusaku.data.remote.ArticlesModel
 
 data class ArticlesResponse(
     @SerializedName("status")
-    val status:String,
+    val status: String,
     @SerializedName("data")
-    val data : List<ArticlesModel>
+    val data: List<ArticlesModel>
 )
 
 data class ArticleDetailResponse(
     @SerializedName("status")
-    val status:String,
+    val status: String,
     @SerializedName("data")
-    val data : List<ArticleDetail>
+    val data: List<ArticleDetail>
 )
 
 data class ArticleDetailResponseById(
     @SerializedName("status")
-    val status:String,
+    val status: String,
     @SerializedName("data")
-    val data : ArticleDetail
+    val data: ArticleDetail
 )

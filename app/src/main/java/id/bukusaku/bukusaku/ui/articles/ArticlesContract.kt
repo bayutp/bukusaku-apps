@@ -2,14 +2,17 @@ package id.bukusaku.bukusaku.ui.articles
 
 import id.bukusaku.bukusaku.base.BaseContract
 import id.bukusaku.bukusaku.data.map.Articles
-import id.bukusaku.bukusaku.data.remote.ArticleDetail
 
-interface ArticlesContract{
-    interface Presenter:BaseContract.Presenter<View>{
+interface ArticlesContract {
+    interface Presenter : BaseContract.Presenter<View> {
         fun getArticles()
+        fun getSearchResult(query: String?)
     }
-    interface View:BaseContract.View{
-        fun showArticles(data:List<Articles>)
-        fun onError(error:Throwable)
+
+    interface View : BaseContract.View {
+        fun showArticles(data: List<Articles>)
+        fun showSearchResult(data: List<Articles>)
+        fun showEmpty()
+        fun onError(error: Throwable)
     }
 }

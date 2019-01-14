@@ -6,22 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.data.map.ProductsMap
-import id.bukusaku.bukusaku.data.remote.Products
 import id.bukusaku.bukusaku.utils.loadImage
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_products.*
 
-class ProductsAdapter(
-    private val products: MutableList<ProductsMap>,
-    private val listener: (ProductsMap) -> Unit
-) : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(parent: ViewGroup, viewGroup: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_products, parent, false))
-    }
+class ProductsAdapter(private val products: MutableList<ProductsMap>, private val listener: (ProductsMap) -> Unit)
+    : RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewGroup: Int) = ViewHolder(LayoutInflater.from(parent.context)
+        .inflate(R.layout.item_products, parent, false))
 
-    override fun getItemCount(): Int {
-        return products.size
-    }
+    override fun getItemCount() = products.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(products[position], listener)
