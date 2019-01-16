@@ -66,7 +66,7 @@
                         android:id="@+id/edt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/name"
                         android:inputType="textPersonName"
                         android:padding="@dimen/dimen_16dp"/>
@@ -81,7 +81,7 @@
                         android:id="@+id/edt_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/phone_number"
                         android:inputType="phone"
                         android:digits="0123456789+"
@@ -97,7 +97,7 @@
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:padding="@dimen/dimen_16dp"/>
@@ -112,7 +112,7 @@
                         android:id="@+id/edt_job"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/jobs"
                         android:inputType="textCapWords"
                         android:padding="@dimen/dimen_16dp"/>
@@ -127,7 +127,7 @@
                         android:id="@+id/edt_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/enquiry_title"
                         android:inputType="textMultiLine"
                         android:padding="@dimen/dimen_16dp"/>
@@ -142,7 +142,7 @@
                         android:id="@+id/edt_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif"
+                        android:fontFamily="@font/roboto_light"
                         android:hint="@string/enquiry_content"
                         android:padding="@dimen/dimen_16dp"/>
 
@@ -159,6 +159,7 @@
             android:layout_marginTop="32dp"
             android:background="@drawable/bg_btn_visit"
             android:text="@string/send"
+            android:fontFamily="@font/roboto_light"
             android:textColor="@color/colorNav"
             android:textStyle="bold"
             android:textAllCaps="false"

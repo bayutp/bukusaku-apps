@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ThemeHome" parent="MyTheme.Base" />
+    <style name="ThemeHome" parent="MyTheme.Base"/>
 
     <style name="MyTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="windowNoTitle">true</item>
@@ -31,6 +31,20 @@
         <item name="colorPrimary">@android:color/transparent</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyTheme.ActionBar" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@null</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="MyTheme.Splash" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="actionBarStyle">@style/MyTheme.ActionBar</item>
+        <item name="android:actionBarStyle">@style/MyTheme.ActionBar</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
     </style>
 
     <style name="MyEditText" parent="Theme.AppCompat.Light">

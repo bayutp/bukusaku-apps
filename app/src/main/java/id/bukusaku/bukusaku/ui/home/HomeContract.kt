@@ -18,5 +18,6 @@ interface HomeContract {
         fun showSearchResult(data: List<ProductDetail>)
         fun showEmpty()
         fun onError(error: Throwable)
+        fun onErrorSearch(error: Throwable)
     }
 }

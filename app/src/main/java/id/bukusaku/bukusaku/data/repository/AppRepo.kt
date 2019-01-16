@@ -1,5 +1,7 @@
 package id.bukusaku.bukusaku.data.repository
 
+import android.annotation.SuppressLint
+import android.util.Log
 import id.bukusaku.bukusaku.data.local.entity.ArticlesEntity
 import id.bukusaku.bukusaku.data.local.entity.CategoriesEntity
 import id.bukusaku.bukusaku.data.local.entity.NewArticleEntity
@@ -17,11 +19,11 @@ import id.bukusaku.bukusaku.data.response.ProductDetailResponse
 import id.bukusaku.bukusaku.data.response.SearchProductResponse
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 
 class AppRepo(private val remoteDataSource: RemoteDataSource, private val localDataSource: LocalDataSource) :
     DataSource {
 
+    @SuppressLint("LogNotTimber")
     override fun getCategories(): Single<List<Categories>> {
         return localDataSource.getLocalCategories()
             .map { list -> list.map { Categories.from(it) } }
@@ -31,12 +33,13 @@ class AppRepo(private val remoteDataSource: RemoteDataSource, private val localD
             .doAfterSuccess {
                 getCategoriesFromRemote().subscribeOn(Schedulers.io())
                     .subscribe(
-                        { Timber.d("refresh categories") },
-                        { error -> Timber.e(error.localizedMessage) }
+                        { Log.d(AppRepo::class.java.simpleName, "refresh categories") },
+                        { error -> Log.e(AppRepo::class.java.simpleName, error.localizedMessage) }
                     )
             }
     }
 
+    @SuppressLint("LogNotTimber")
     override fun getNewArticles(): Single<List<NewArticles>> {
         return localDataSource.getLocalNewArticle()
             .map { listEntity ->
@@ -48,12 +51,13 @@ class AppRepo(private val remoteDataSource: RemoteDataSource, private val localD
             .doAfterSuccess {
                 getNewArticlesFromRemote().subscribeOn(Schedulers.io())
                     .subscribe(
-                        { Timber.d("refresh new articles") },
-                        { error -> Timber.e(error) }
+                        { Log.d(AppRepo::class.java.simpleName, "refresh new articles") },
+                        { error -> Log.e(AppRepo::class.java.simpleName, error.localizedMessage) }
                     )
             }
     }
 
+    @SuppressLint("LogNotTimber")
     override fun getArticles(): Single<List<Articles>> {
         return localDataSource.getLocalArticle()
             .map { listEntity -> listEntity.map { Articles.from(it) } }
@@ -63,8 +67,8 @@ class AppRepo(private val remoteDataSource: RemoteDataSource, private val localD
             .doAfterSuccess {
                 getArticlesFromRemote().subscribeOn(Schedulers.io())
                     .subscribe(
-                        { Timber.d("refresh articles") },
-                        { error -> Timber.e(error) }
+                        { Log.d(AppRepo::class.java.simpleName, "refresh articles") },
+                        { error -> Log.e(AppRepo::class.java.simpleName, error.localizedMessage) }
                     )
             }
     }
@@ -102,6 +106,7 @@ class AppRepo(private val remoteDataSource: RemoteDataSource, private val localD
             .map { response -> response.data.map { Articles.from(it) } }
     }
 
+    @SuppressLint("LogNotTimber")
     override fun getProducts(categoryName: String): Single<List<ProductsMap>> {
         return localDataSource.getLocalProducts(categoryName)
             .map { productsLocal -> productsLocal.map { ProductsMap.from(it) } }
@@ -113,8 +118,8 @@ class AppRepo(private val remoteDataSource: RemoteDataSource, private val localD
                 getProductsFromRemote(categoryName)
                     .subscribeOn(Schedulers.io())
                     .subscribe(
-                        { Timber.d("update products") },
-                        { error -> Timber.e(error.localizedMessage) })
+                        { Log.d(AppRepo::class.java.simpleName, "update products") },
+                        { error -> Log.d(AppRepo::class.java.simpleName, error.localizedMessage) })
             }
     }
 

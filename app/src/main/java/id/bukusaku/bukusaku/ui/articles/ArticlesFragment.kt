@@ -10,14 +10,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
+import cn.pedant.SweetAlert.SweetAlertDialog
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.R.id.action_search
 import id.bukusaku.bukusaku.data.map.Articles
 import id.bukusaku.bukusaku.ui.detail.article.DetailArticleActivity
-import id.bukusaku.bukusaku.utils.ARTICLE_ID
-import id.bukusaku.bukusaku.utils.gone
-import id.bukusaku.bukusaku.utils.toUpperFirstWord
-import id.bukusaku.bukusaku.utils.visible
+import id.bukusaku.bukusaku.utils.*
 import kotlinx.android.synthetic.main.fragment_articles.*
 import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
@@ -31,6 +29,7 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var rvArticles: RecyclerView
     private lateinit var rvSearch: RecyclerView
+    private lateinit var alertError: SweetAlertDialog
 
     private var searchView: SearchView? = null
     private var searchQuery: String? = null
@@ -70,6 +69,8 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
         rvSearch.layoutManager = LinearLayoutManager(activity)
         rvSearch.adapter = adapter
 
+        alertError = SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
+
         swipeRefresh.setOnRefreshListener {
             getData()
         }
@@ -78,8 +79,9 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
     override fun showArticles(data: List<Articles>) {
         swipeRefresh.isEnabled = true
         swipeRefresh.isRefreshing = false
+        val sortData = data.sortedByDescending { it.id }
         dataArticles.clear()
-        dataArticles.addAll(data)
+        dataArticles.addAll(sortData)
         adapter.notifyDataSetChanged()
 
         rvArticles.visible()
@@ -90,7 +92,12 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
 
     override fun onError(error: Throwable) {
         swipeRefresh.isRefreshing = false
-        rvArticles.snackbar(error.localizedMessage).show()
+        alertError.successOrFailed(
+            error.localizedMessage +
+                    "\n" + getString(R.string.home_lost_connection_message),
+            getString(R.string.articles_error_alert_title),
+            getString(R.string.articles_success_alert_confirm)
+        )
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

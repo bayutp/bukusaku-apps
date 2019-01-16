@@ -8,6 +8,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         tools:context=".ui.articles.ArticlesFragment">
 
         <android.support.v7.widget.RecyclerView
@@ -46,7 +47,7 @@
 
         <TextView
             android:id="@+id/tv_empty_search_articles"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/roboto_light"
             android:textSize="14sp"
             android:visibility="gone"
             android:textColor="#828282"

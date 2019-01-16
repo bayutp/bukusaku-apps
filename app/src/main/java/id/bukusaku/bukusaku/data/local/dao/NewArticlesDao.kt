@@ -22,7 +22,7 @@ interface ArticlesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertArticles(data: List<ArticlesEntity>)
 
-    @Query("SELECT * FROM articles ORDER BY id DESC")
+    @Query("SELECT * FROM articles")
     fun getLocalArticles(): Single<List<ArticlesEntity>>
 
     @Query("SELECT * FROM articles WHERE title LIKE :query")
