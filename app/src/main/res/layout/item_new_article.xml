@@ -22,6 +22,7 @@
         android:paddingBottom="4dp"
         android:paddingStart="12dp"
         android:textAlignment="center"
+        android:fontFamily="@font/roboto_light"
         android:textColor="@android:color/white"
         android:background="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
@@ -38,6 +39,7 @@
         android:textStyle="bold"
         android:padding="8dp"
         android:maxLines="2"
+        android:fontFamily="@font/roboto_light"
         app:layout_constraintBottom_toBottomOf="@id/img_cover_new"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

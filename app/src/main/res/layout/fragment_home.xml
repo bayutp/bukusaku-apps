@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:background="@android:color/white"
-                android:fontFamily="sans-serif"
+                android:fontFamily="@font/roboto_light"
                 android:padding="8dp"
                 android:paddingBottom="0dp"
                 android:text="@string/latest"
@@ -83,7 +83,7 @@
 
             <TextView
                 android:id="@+id/tv_empty_search"
-                android:fontFamily="sans-serif"
+                android:fontFamily="@font/roboto_light"
                 android:textSize="14sp"
                 android:visibility="gone"
                 android:textColor="#828282"

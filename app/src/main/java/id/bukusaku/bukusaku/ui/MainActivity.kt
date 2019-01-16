@@ -51,4 +51,9 @@ class MainActivity : AppCompatActivity() {
         navigation.selectedItemId = menu_home
         loadFragment(HomeFragment(), HomeFragment::class.java.simpleName, savedInstanceState)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        this@MainActivity.finish()
+    }
 }

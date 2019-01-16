@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuItem
+import cn.pedant.SweetAlert.SweetAlertDialog
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.data.map.ProductsMap
 import id.bukusaku.bukusaku.ui.detail.product.ProductDetailActivity
@@ -27,6 +28,7 @@ class ProductsActivity : AppCompatActivity(), ProductsContract.View {
     private lateinit var categoryName: String
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
     private lateinit var adapter: ProductsAdapter
+    private lateinit var alertError: SweetAlertDialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +48,8 @@ class ProductsActivity : AppCompatActivity(), ProductsContract.View {
 
         rv_search_products.layoutManager = LinearLayoutManager(this@ProductsActivity)
         rv_search_products.adapter = adapter
+
+        alertError = SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
 
         swipe_refresh_products.setOnRefreshListener { getProducts() }
     }
@@ -155,7 +159,13 @@ class ProductsActivity : AppCompatActivity(), ProductsContract.View {
 
 
     override fun onError(error: Throwable) {
-        rv_search_products.snackbar(error.localizedMessage).show()
+        swipe_refresh_products.isRefreshing = false
+        alertError.successOrFailed(
+            error.localizedMessage +
+                    "\n" + getString(R.string.home_lost_connection_message),
+            getString(R.string.articles_error_alert_title),
+            getString(R.string.articles_success_alert_confirm)
+        )
     }
 
     override fun onAttachView() { presenter.onAttach(this) }

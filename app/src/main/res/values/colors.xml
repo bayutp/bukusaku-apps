@@ -15,4 +15,6 @@
     <color name="editTextNormal">#ccc4c4</color>
     <color name="editTextActive">#ff9131</color>
 
+    <item name="black_10_transparent" type="color">#1A000000</item>
+
 </resources>

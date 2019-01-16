@@ -37,7 +37,7 @@ class HomePresenter(private val compositeDisposable: CompositeDisposable, privat
             .subscribeOn(Schedulers.io())
             .subscribeBy(
                 onSuccess = { if (it.data.isNullOrEmpty()) mView?.showEmpty() else mView?.showSearchResult(it.data) },
-                onError = { mView?.onError(it) }
+                onError = { mView?.onErrorSearch(it) }
             ).addTo(compositeDisposable)
     }
 

@@ -20,6 +20,7 @@
             android:padding="8dp"
             android:text="@string/app_name"
             android:maxLines="2"
+            android:fontFamily="@font/roboto_light"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toStartOf="@id/img_articles_cover"
             android:textAlignment="textStart"
@@ -33,11 +34,10 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/roboto_light"
             android:text="@string/app_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_articles"
-        />
+            app:layout_constraintTop_toBottomOf="@id/tv_articles"/>
         <TextView
             android:id="@+id/tv_desc"
             android:layout_width="0dp"
@@ -46,7 +46,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:paddingBottom="8dp"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/roboto_light"
             android:text="@string/app_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/img_articles_cover"

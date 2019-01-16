@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.*
 import android.widget.TextView
+import cn.pedant.SweetAlert.SweetAlertDialog
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.R.id.action_search
 import id.bukusaku.bukusaku.data.map.Categories
@@ -24,7 +25,6 @@ import id.bukusaku.bukusaku.ui.home.adapter.LatestArticlesAdapter
 import id.bukusaku.bukusaku.ui.home.adapter.SearchAdapter
 import id.bukusaku.bukusaku.utils.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.jetbrains.anko.design.snackbar
 import org.jetbrains.anko.find
 import org.jetbrains.anko.support.v4.startActivity
 import org.koin.android.ext.android.inject
@@ -41,6 +41,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     private lateinit var latest: TextView
     private var searchQuery: String? = null
     private var searchView: SearchView? = null
+    private lateinit var alertError: SweetAlertDialog
     private var queryTextListener: SearchView.OnQueryTextListener? = null
     private var searchHome: MutableList<ProductDetail> = mutableListOf()
     private val categories: MutableList<Categories> = mutableListOf()
@@ -75,14 +76,14 @@ class HomeFragment : Fragment(), HomeContract.View {
         rvCategories.layoutManager = GridLayoutManager(activity, 3)
         rvCategories.adapter = adapter
 
-        val layoutManager = LinearLayoutManager(activity)
-        layoutManager.reverseLayout = true
-        rvNews.layoutManager = layoutManager
+        rvNews.layoutManager = LinearLayoutManager(activity)
+
         rvNews.adapter = adapterArticle
 
         rvSearch.layoutManager = LinearLayoutManager(activity)
         rvSearch.adapter = searchAdapter
 
+        alertError = SweetAlertDialog(activity, SweetAlertDialog.ERROR_TYPE)
         swipeRefresh.setOnRefreshListener {
             getData()
         }
@@ -96,8 +97,9 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun showDataArticles(data: List<NewArticles>) {
         swipeRefresh.isRefreshing = false
+        val sort = data.sortedByDescending { it.id }
         articles.clear()
-        articles.addAll(data)
+        articles.addAll(sort)
         adapterArticle.notifyDataSetChanged()
         showView()
     }
@@ -116,6 +118,8 @@ class HomeFragment : Fragment(), HomeContract.View {
         rvCategories.visible()
         latest.visible()
         rvSearch.gone()
+        img_empty_search.gone()
+        tv_empty_search.gone()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -201,7 +205,26 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun onError(error: Throwable) {
         swipe_refresh.isRefreshing = false
-        rvCategories.snackbar(error.localizedMessage).show()
+        alertError.successOrFailed(
+            error.localizedMessage +
+                    "\n" + getString(R.string.home_lost_connection_message),
+            getString(R.string.articles_error_alert_title),
+            getString(R.string.articles_success_alert_confirm)
+        )
+    }
+
+    override fun onErrorSearch(error: Throwable) {
+        alertError.error(
+            getString(R.string.articles_error_alert_title),
+            getString(R.string.articles_error_alert_confirm),
+            error.localizedMessage,
+            getString(R.string.articles_error_alert_close)
+        )
+        alertError.setConfirmClickListener {
+            presenter.getSearchResult(searchQuery)
+            alertError.dismiss()
+        }
+        alertError.setCancelClickListener { alertError.dismiss() }
     }
 
     override fun onAttachView() {

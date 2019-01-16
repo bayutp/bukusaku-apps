@@ -11,7 +11,7 @@
     <string name="enquiry_title">Judul Kerjasama</string>
     <string name="enquiry_content">Isi Kerjasama</string>
     <string name="send">Send</string>
-    <string name="title_info_enquiry">Berikut merupakan data lengkap anda yang telah kami terima : </string>
+    <string name="title_info_enquiry">Berikut merupakan data lengkap anda yang telah kami terima :</string>
     <string name="source">Source</string>
     <string name="enquiry">Ajukan Kerjasama</string>
     <string name="enquiry_title_bar">Kerjasama</string>
@@ -77,4 +77,20 @@
     <string name="confirm_enquiry_yes">Yes</string>
     <string name="confirm_enquiry_cancel">Cancel</string>
 
+    <string name="onboarding_finish">Mulai Sekarang</string>
+    <string name="onboarding_title_1">Temukan Mitra Usahamu</string>
+    <string name="onboarding_title_2">Informasi terbaru seputar bisnis, gaya hidup, dan teknologi.</string>
+    <string name="onboarding_title_3">Kembangkan dan tingkatkan kualitas hidup anda</string>
+
+    <string name="onboarding_desc_1">Kami membuka peluang bagi anda yang membutuhkan Mitra Usaha untuk memajukan
+        bisnis
+    </string>
+    <string name="onboarding_desc_2">Berbagai informasi terbaru seputar dunia bisnis, startup, gaya hidup, dan teknologi
+        setiap hari
+    </string>
+    <string name="onboarding_desc_3">Temukan peluang untuk mengembangkan diri anda melalui referensi yang kami
+        sediakan
+    </string>
+
+    <string name="home_lost_connection_message">Keep calm, pull down to refresh and try again :)</string>
 </resources>
