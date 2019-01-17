@@ -18,4 +18,8 @@ class ViewPagerAdapter(fm: FragmentManager?) : FragmentPagerAdapter(fm) {
         fragmentList.add(fragment)
         fragmentListTitle.add(title)
     }
+
+    fun addFragment(fragment: List<Fragment>){
+        fragmentList.addAll(fragment)
+    }
 }

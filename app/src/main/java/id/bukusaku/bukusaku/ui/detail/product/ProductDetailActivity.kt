@@ -16,6 +16,7 @@ import id.bukusaku.bukusaku.ui.enquiry.EnquiryActivity
 import id.bukusaku.bukusaku.utils.*
 import kotlinx.android.synthetic.main.activity_product_detail.*
 import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 
 class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
@@ -30,8 +31,13 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
     private lateinit var alertLoading: SweetAlertDialog
     private lateinit var adapter: ProductDetailAdapter
     private lateinit var alertError: SweetAlertDialog
-    private lateinit var alertBookmarkSuccess : SweetAlertDialog
-    private lateinit var alertBookmarkFailed : SweetAlertDialog
+    private lateinit var alertBookmarkSuccess: SweetAlertDialog
+    private lateinit var alertBookmarkFailed: SweetAlertDialog
+
+    companion object {
+        const val IMG_PRODUCT_LIST = "IMG_PRODUCT_LIST"
+        const val ID_IMG_PRODUCTS = "ID_IMG_PRODUCTS"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +49,14 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
     }
 
     private fun initView() {
-        adapter = ProductDetailAdapter(imageList)
-        rv_product_images.layoutManager = LinearLayoutManager(this@ProductDetailActivity,
-            LinearLayoutManager.HORIZONTAL, false)
+        adapter = ProductDetailAdapter(imageList) {
+            data,id ->
+            startActivity<ProductDetailImageActivity>(IMG_PRODUCT_LIST to data, ID_IMG_PRODUCTS to id)
+        }
+        rv_product_images.layoutManager = LinearLayoutManager(
+            this@ProductDetailActivity,
+            LinearLayoutManager.HORIZONTAL, false
+        )
         rv_product_images.adapter = adapter
     }
 
@@ -97,12 +108,12 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
         container_product_detail.invisible()
     }
 
-    private fun showSuccess(message:String, title:String){
+    private fun showSuccess(message: String, title: String) {
         alertBookmarkFailed.dismiss()
-        alertBookmarkSuccess.successOrFailed(message,title,getString(R.string.articles_success_alert_confirm))
+        alertBookmarkSuccess.successOrFailed(message, title, getString(R.string.articles_success_alert_confirm))
     }
 
-    private fun showFailed(message: String){
+    private fun showFailed(message: String) {
         alertBookmarkSuccess.dismiss()
         val title = getString(R.string.articles_error_alert_title)
         val confirmText = getString(R.string.articles_error_alert_confirm)
@@ -122,7 +133,9 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
         customTabsIntent.launchUrl(this, Uri.parse(url))
     }
 
-    private fun onInquiry() { startActivity<EnquiryActivity>(PRODUCT_ID to idProduct) }
+    private fun onInquiry() {
+        startActivity<EnquiryActivity>(PRODUCT_ID to idProduct)
+    }
 
     override fun onError(error: Throwable) {
         alertLoading.dismiss()
@@ -131,7 +144,7 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
         val cancelText = getString(R.string.articles_error_alert_close)
         alertError.setConfirmClickListener { getProductDetail() }
         alertError.setCancelClickListener { this.finish() }
-        alertError.error(title,confirm,error.localizedMessage,cancelText)
+        alertError.error(title, confirm, error.localizedMessage, cancelText)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -144,7 +157,7 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
             R.id.bookmark_product_menu -> {
-                if(isBookmark) removeFromBookmark() else addToBookmark()
+                if (isBookmark) removeFromBookmark() else addToBookmark()
                 isBookmark = !isBookmark
                 setBookmark()
                 true
@@ -167,20 +180,20 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
             data?.let { presenter.bookmark(it) }
             val message = getString(R.string.bookmark_products_success_message)
             val title = getString(R.string.bookmark_articles_success_title)
-            showSuccess(message,title)
+            showSuccess(message, title)
         } catch (e: Throwable) {
             showFailed(getString(R.string.bookmark_products_error, e.localizedMessage))
         }
     }
 
-    private fun removeFromBookmark(){
+    private fun removeFromBookmark() {
         try {
             presenter.deleteFromBookmark(idProduct)
             val message = getString(R.string.delete_bookmark_products_message)
             val title = getString(R.string.delete_bookmark_articles_title)
             showSuccess(message, title)
-        }catch (e:Throwable){
-            showFailed(getString(R.string.delete_bookmark_products_error,e.localizedMessage))
+        } catch (e: Throwable) {
+            showFailed(getString(R.string.delete_bookmark_products_error, e.localizedMessage))
         }
     }
 
@@ -192,9 +205,13 @@ class ProductDetailActivity : AppCompatActivity(), ProductDetailContract.View {
         }
     }
 
-    override fun onAttachView() { presenter.onAttach(this) }
+    override fun onAttachView() {
+        presenter.onAttach(this)
+    }
 
-    override fun onDetachView() { presenter.onDetach() }
+    override fun onDetachView() {
+        presenter.onDetach()
+    }
 
     override fun onDestroy() {
         super.onDestroy()

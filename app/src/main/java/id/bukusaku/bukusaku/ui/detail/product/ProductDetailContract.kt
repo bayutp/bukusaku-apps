@@ -1,5 +1,6 @@
 package id.bukusaku.bukusaku.ui.detail.product
 
+import android.view.View
 import id.bukusaku.bukusaku.base.BaseContract
 import id.bukusaku.bukusaku.data.remote.ProductDetail
 

@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.WindowManager
 import id.bukusaku.bukusaku.R
 import id.bukusaku.bukusaku.ui.MainActivity
-import id.bukusaku.bukusaku.ui.onboarding.adapter.FragmentAdapter
+import id.bukusaku.bukusaku.ui.bookmark.adapter.ViewPagerAdapter
 import id.bukusaku.bukusaku.ui.splashscreen.SplashScreenActivity.Companion.STATUS_ON_BOARDING
 import id.bukusaku.bukusaku.utils.SharePreference
 import id.bukusaku.bukusaku.utils.gone
@@ -69,7 +69,8 @@ class OnBoardingActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun setupFragmentAdapter() {
-        val fragmentAdapter = FragmentAdapter(supportFragmentManager, fragmentList)
+        val fragmentAdapter = ViewPagerAdapter(supportFragmentManager)
+        fragmentAdapter.addFragment(fragmentList)
         view_pager_onboarding.adapter = fragmentAdapter
         view_pager_onboarding.addOnPageChangeListener(this)
 

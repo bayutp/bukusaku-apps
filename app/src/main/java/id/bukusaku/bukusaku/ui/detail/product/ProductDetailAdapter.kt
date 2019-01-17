@@ -10,16 +10,27 @@ import id.bukusaku.bukusaku.utils.loadImage
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_product_image.*
 
-class ProductDetailAdapter(private val imagesList: MutableList<ImageProduct>) :
-    RecyclerView.Adapter<ProductDetailAdapter.ViewHolder>() {
+class ProductDetailAdapter(private val imagesList: MutableList<ImageProduct>,
+                           private val listener: (List<ImageProduct>, Int) -> Unit) : RecyclerView.Adapter<ProductDetailAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewGroup: Int) = ViewHolder(LayoutInflater.from(parent.context)
         .inflate(R.layout.item_product_image, parent, false))
 
     override fun getItemCount() = imagesList.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) { holder.bind(imagesList[position]) }
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(imagesList[position], imagesList,listener)
+    }
 
     class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(images: ImageProduct) { img_product_list.loadImage(images.imgUrl) }
+        fun bind(images: ImageProduct,
+                 imagesList: MutableList<ImageProduct>,
+                 listener: (List<ImageProduct>, Int) -> Unit) {
+
+            img_product_list.loadImage(images.imgUrl)
+            img_product_list.setOnClickListener {
+                val position = adapterPosition
+                listener(imagesList, position) }
+        }
     }
 }
