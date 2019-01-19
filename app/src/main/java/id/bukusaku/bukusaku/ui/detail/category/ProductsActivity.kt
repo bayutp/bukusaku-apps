@@ -72,7 +72,7 @@ class ProductsActivity : AppCompatActivity(), ProductsContract.View {
     override fun showProducts(data: List<ProductsMap>) {
         swipe_refresh_products.isRefreshing = false
         products.clear()
-        products.addAll(data)
+        products.addAll(data.sortedByDescending { it.id })
         adapter.notifyDataSetChanged()
     }
 

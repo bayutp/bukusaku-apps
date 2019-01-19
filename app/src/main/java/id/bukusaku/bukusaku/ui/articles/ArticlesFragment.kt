@@ -30,6 +30,7 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
     private lateinit var rvArticles: RecyclerView
     private lateinit var rvSearch: RecyclerView
     private lateinit var alertError: SweetAlertDialog
+    private lateinit var linearLayoutManager: LinearLayoutManager
 
     private var searchView: SearchView? = null
     private var searchQuery: String? = null
@@ -63,8 +64,10 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
     private fun initView() {
         adapter = ArticlesAdapter(dataArticles) { startActivity<DetailArticleActivity>(ARTICLE_ID to it.id) }
 
-        rvArticles.layoutManager = LinearLayoutManager(activity)
+        linearLayoutManager = LinearLayoutManager(activity)
+        rvArticles.layoutManager = linearLayoutManager
         rvArticles.adapter = adapter
+        setupScrollListener()
 
         rvSearch.layoutManager = LinearLayoutManager(activity)
         rvSearch.adapter = adapter
@@ -76,12 +79,25 @@ class ArticlesFragment : Fragment(), ArticlesContract.View {
         }
     }
 
+    fun setupScrollListener(){
+        rvArticles.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val visibleItemCount = linearLayoutManager.childCount
+                val totalItemCount = linearLayoutManager.itemCount - 5
+                val firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition()
+                if (firstVisibleItemPosition + visibleItemCount >= totalItemCount){
+                    getData()
+                }
+            }
+        })
+    }
+
     override fun showArticles(data: List<Articles>) {
         swipeRefresh.isEnabled = true
         swipeRefresh.isRefreshing = false
-        val sortData = data.sortedByDescending { it.id }
         dataArticles.clear()
-        dataArticles.addAll(sortData)
+        dataArticles.addAll(data.sortedByDescending { it.id })
         adapter.notifyDataSetChanged()
 
         rvArticles.visible()

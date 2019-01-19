@@ -97,9 +97,8 @@ class HomeFragment : Fragment(), HomeContract.View {
 
     override fun showDataArticles(data: List<NewArticles>) {
         swipeRefresh.isRefreshing = false
-        val sort = data.sortedByDescending { it.id }
         articles.clear()
-        articles.addAll(sort)
+        articles.addAll(data.sortedByDescending { it.id })
         adapterArticle.notifyDataSetChanged()
         showView()
     }
@@ -107,7 +106,7 @@ class HomeFragment : Fragment(), HomeContract.View {
     override fun showDataCategories(data: List<Categories>) {
         swipeRefresh.isRefreshing = false
         categories.clear()
-        categories.addAll(data)
+        categories.addAll(data.sortedBy { it.id })
         adapter.notifyDataSetChanged()
         showView()
     }
