@@ -72,7 +72,7 @@ class ProductsActivity : AppCompatActivity(), ProductsContract.View {
     override fun showProducts(data: List<ProductsMap>) {
         swipe_refresh_products.isRefreshing = false
         products.clear()
-        products.addAll(data.sortedByDescending { it.id })
+        products.addAll(data.sortedBy { it.name })
         adapter.notifyDataSetChanged()
     }
 
@@ -137,7 +137,7 @@ class ProductsActivity : AppCompatActivity(), ProductsContract.View {
 
     override fun showSearchResult(data: List<ProductsMap>) {
         products.clear()
-        products.addAll(data)
+        products.addAll(data.sortedBy { it.name })
         adapter.notifyDataSetChanged()
 
         swipe_refresh_products.isEnabled = false

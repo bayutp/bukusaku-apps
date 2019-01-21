@@ -6,27 +6,66 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 0
+ext.versionClassifier = null
+ext.isSnapshot = false
+ext.minimumSdkVersion = 18
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "id.bukusaku.bukusaku"
-        minSdkVersion 18
+        minSdkVersion project.ext.minimumSdkVersion
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode generateVersionCode()
+        versionName generateVersionName()
         buildConfigField "String", "BASE_URL", "\"https://buku-saku.herokuapp.com/api/v1/\""
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            minifyEnabled true
+            shrinkResources true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "Bukusaku-${variant.versionName}-${variant.buildType.name}.apk"
+        }
+    }
+
     androidExtensions {
         experimental = true
     }
 }
+
+private Integer generateVersionCode() {
+    return ext.minimumSdkVersion * 10000000 + ext.versionMajor * 10000 + ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+    if (ext.versionClassifier == null) {
+        if (ext.isSnapshot) {
+            ext.versionClassifier = "SNAPSHOT"
+        }
+    }
+
+    if (ext.versionClassifier != null) {
+        versionName += "-" + ext.versionClassifier
+    }
+    return versionName
+}
+
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
